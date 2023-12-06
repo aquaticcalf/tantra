@@ -1,13 +1,84 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + React</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>tantra</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-black flex min-h-screen">
+    <div class="bg-red-300 grow-[1] p-5 flex flex-col gap-2">
+        <div id="block1" class="bg-black text-white text-center py-2 codeblock" draggable="true">block</div>
+        <div id="block2" class="bg-green-300 text-black text-center py-2 codeblock" draggable="true">block</div>
+        <div id="block3" class="bg-yellow-300 text-black text-center py-2 codeblock" draggable="true">block</div>
+        <div id="block4" class="bg-violet-900 text-white text-center py-2 codeblock" draggable="true">block</div>
+    </div>
+    <div class="bg-blue-300 grow-[2] p-5 flex flex-col gap-2" id="canvas"></div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const canvas = document.getElementById('canvas')
+            let isDragging = false
+            let draggedBlockId = null
+
+            canvas.addEventListener('dragover', function (e) {
+                e.preventDefault()
+            })
+
+            canvas.addEventListener('drop', function (e) {
+                e.preventDefault()
+
+                if (isDragging && draggedBlockId) {
+                    const originalCodeblock = document.getElementById(draggedBlockId)
+
+                    if (originalCodeblock) {
+                        const clone = originalCodeblock.cloneNode(true)
+                        const cloneId = `canvasBlock_${Date.now()}`
+                        clone.id = cloneId
+                        clone.style.cursor = 'grab'
+                        canvas.appendChild(clone)
+                    }
+                }
+
+                isDragging = false
+                draggedBlockId = null
+            })
+
+            canvas.addEventListener('dragleave', function (e) {
+                if (isDragging && e.target === canvas) {
+                    const originalCodeblock = document.getElementById(draggedBlockId)
+                    
+                    if(draggedBlockId == "block1" || draggedBlockId == "block2" || draggedBlockId == "block3" || draggedBlockId == "block4"){
+                        return
+                    }
+
+                    else{
+
+                        if (originalCodeblock) {
+                            originalCodeblock.remove()
+                        }
+                        
+                        isDragging = false
+                        draggedBlockId = null
+                    }
+                }
+            })
+
+            document.addEventListener('mousedown', function (e) {
+                const codeblock = e.target.closest('.codeblock')
+                if (codeblock) {
+                    isDragging = true
+                    codeblock.style.cursor = 'grabbing'
+                    draggedBlockId = codeblock.id
+                }
+            })
+
+            document.addEventListener('mouseup', function () {
+                isDragging = false
+                document.querySelectorAll('.codeblock').forEach(codeblock => {
+                    codeblock.style.cursor = 'grab'
+                })
+            })
+        })
+    </script>
+</body>
 </html>

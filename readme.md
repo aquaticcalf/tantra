@@ -34,7 +34,7 @@ Tantra takes a unique approach to visual programming by combining the following 
 If you're interested in following along with my progress or contributing to the project, here are some ways to get involved:
 
 - **Watch this repository** for updates on my progress
-- **Watch this repository** to encourage me
+- **Star this repository** to encourage me
 - **Reach out to me** if you have any questions or would like to discuss the project
 - **Check back soon** for opportunities to contribute to the project as it develops
 
